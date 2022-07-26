@@ -1,4 +1,4 @@
-# lisperanto
+# Yellow
 In browser blue-board blueprint with yellow ink and time roll-back
 
 you can check live version https://uprun.github.io/yellow/
