@@ -1,0 +1,1006 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lisperanto</title>
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/webpad.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+</head>
+<body 
+    class="lisperanto-main-body" 
+    style="background-color: #000000; " 
+    onwheel="typeof(lookup) !== 'undefined' && lookup.bodyOnWheel()"
+    onpointermove="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerMove()"
+    ontouchmove="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchMove()"
+    ontouchend="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    ontouchcancel="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    ontouchleave="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    data-bind=
+        "click: $root.bodyOnClick,
+        event: 
+            {
+                keydown: $root.bodyKeyDown
+            },
+        style: 
+            { 
+                background: $root.backgroundColor() 
+            }">
+
+            
+    <script type="text/html" id="contextual-omni-wheel-template">
+        <div class="contextual-omni-wheel"
+            data-bind="
+                visible: visible,
+                click: $root.omniWheelOnClick,
+                style: 
+                    { 
+                        left: $root.globalOffsetX() + left(), 
+                        top: $root.globalOffsetY() + top()
+                    }">
+            <div style="font-size: 1rem; right: 2rem; transform: translate(0, -50%); " class="lisperanto-div-button webpad-color-purple contextual-omni-wheel--options w3-animate-opacity" 
+                data-bind="click: $root.createFunction">
+                    function 
+            </div>
+            <div style="font-size: 1rem; bottom: 2rem; transform: translate(-50%, 0); " class="lisperanto-div-button webpad-color-purple contextual-omni-wheel--options w3-animate-opacity" 
+                data-bind="click: $root.create_and_show_RDF_entry">
+                    RDF-entry 
+            </div>
+            <div style="font-size: 1rem; left: 2rem; transform: translate(0, -50%); " class="lisperanto-div-button webpad-color-purple contextual-omni-wheel--options w3-animate-opacity" 
+                data-bind="click: $root.openSandbox">
+                    sandbox 
+            </div>
+            <div style="font-size: 1rem; top: 2rem; transform: translate(-50%, 0); " class="lisperanto-div-button webpad-color-purple contextual-omni-wheel--options w3-animate-opacity" 
+                data-bind="click: $root.showOmniBox">
+                    command 
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="contextual-omni-box-template">
+        <div class="contextual-omni-box" 
+            onwheel="typeof(lookup) !== 'undefined' && lookup.omniBoxOnWheel()"
+            data-bind="
+                visible: visible,
+                click: $root.omniBoxClick,
+                style: 
+                    { 
+                        left: $root.globalOffsetX() + left(), 
+                        top: $root.globalOffsetY() + top()
+                    }">
+            <div class="webpad-sky-frame diagonal-stripes-background">
+                <div 
+                    data-bind="if: 
+                        $root.activeOperation() === 'focusOnParameter' 
+                        || $root.activeOperation() === 'renameFunction' 
+                        || $root.activeOperation() === 'addingFunctionParameter'
+                        || $root.activeOperation() === 'addingFieldInRecord'
+                        || $root.activeOperation() === 'addingFieldTypeInRecord'
+                        || $root.activeOperation() === 'addingFieldValueInRecord'
+                        || $root.activeOperation() === 'global-omni-box-activated'
+                        || $root.activeOperation() === 'add-statement-predicate-to-rdf-entry'
+                        || $root.activeOperation() === 'add_RDF_subject_in_statement'
+                        || $root.activeOperation() === 'add-name-to-rdf-entry' ">
+                    <input 
+                        style="font-size: 1.2rem; margin: 0.2em;" 
+                        class="omni-box-input" 
+                        placeholder="type something here" 
+                        data-bind="
+                            textInput: $root.omniBoxTextInput,
+                            attr: 
+                                { 
+                                    id: id
+                                }, 
+                            event: 
+                                {
+                                    keydown: $root.omniBoxInputKeyDown,
+                                    keypress: $root.omniBoxInputKeyPress,
+                                    keyup: $root.omniBoxInputKeyUp,
+                                }" />
+                </div>
+                <div data-bind="if: $root.activeOperation() === 'renameFunction'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.renameFunction">
+                            apply 
+                    </div>
+                </div>
+                <div 
+                    data-bind="if: $root.activeOperation() === 'addingFunctionParameter'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.addParameter">
+                            add 
+                    </div>
+                </div>
+                <div 
+                    data-bind="if: $root.activeOperation() === 'addingFieldInRecord'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.addRecordField">
+                            add 
+                    </div>
+                </div>
+
+                <div 
+                    data-bind="if: $root.activeOperation() === 'add-statement-predicate-to-rdf-entry'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.add_statement_predicate_to_rdf_entry">
+                            add 
+                    </div>
+                </div>
+                <div 
+                    data-bind="if: $root.activeOperation() === 'add_RDF_subject_in_statement'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.add_maybe_existing_RDF_subject_in_statement">
+                            add 
+                    </div>
+                </div>
+                <div 
+                    data-bind="if: $root.activeOperation() === 'add-name-to-rdf-entry'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.add_name_to_rdf_entry">
+                            add 
+                    </div>
+                </div>
+                
+
+                
+                
+
+                <div 
+                    data-bind="if: $root.activeOperation() === 'addingFieldTypeInRecord'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.addRecordFieldType">
+                            add 
+                    </div>
+                </div>
+
+                <div 
+                    data-bind="if: $root.activeOperation() === 'addingFieldValueInRecord'">
+                    <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="click: $root.addRecordFieldValue">
+                            add 
+                    </div>
+                </div>
+                
+                <div class="omnibox-options">
+                    <div data-bind="if: $root.activeOperation() === 'RecordFieldTypeMissmatchFix' ">
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.transformSymbolUsageToStringConstant">
+                            temp: transform to string
+                        </div>
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.omniBoxOpenFunctionAction">
+                            temp: fix type
+                        </div>
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.unplug">
+                            temp: unplug
+                        </div>
+                    </div>
+                    <div data-bind="if: $root.activeOperation() === 'functionUsageIsSelected' ">
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.omniBoxOpenFunctionAction">
+                            open definition
+                        </div>
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.unplug">
+                            unplug
+                        </div>
+                    </div>
+                    <div data-bind="if: $root.activeOperation() === 'focusOnFunctionHeaderDefinition' ">
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.omniBoxRenameFunctionAction">
+                            rename
+                        </div>
+                        
+                    </div>
+                    <div data-bind="if: $root.activeOperation() === 'focus-on-RDF-predicate-in-statement' ">
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.omniBox_open_predicate_definition_from_statement">
+                            open definition
+                        </div>
+                    </div>
+
+                    <div data-bind="if: $root.activeOperation() === 'focus-on-RDF-subject-in-statement' ">
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.omniBox_open_subject_definition_from_statement">
+                            open definition
+                        </div>
+                    </div>
+
+                    <div data-bind="if: $root.activeOperation() === 'focusOnSandboxHeaderDefinition' ">
+                        <div style="font-size: 1.2rem; margin: 0.2em;" data-bind="click: $root.clearSandbox">
+                            clear
+                        </div>
+                    </div>
+                    <div data-bind="if: $root.activeOperation() === 'focusOnParameter'">
+                        <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                            data-bind="click: $root.tryParseOmniBoxByClick, text: $root.preParsedOmniBoxValueInformation">
+                            add as 
+                        </div>
+                        <div data-bind="foreach: $root.functionsLookup">
+                            <div data-bind="text: $data.text, click: $root.addFunctionByClick"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: $root.activeOperation() === 'global-omni-box-activated'">
+                        <div data-bind="foreach: $root.filteredSearch">
+                            <div data-bind="text: $data.text, click: $root.openFunctionDefinitionFromOmniBox"></div>
+                        </div>
+                    </div>
+                    <div data-bind="if: $root.activeOperation() === 'addingFieldTypeInRecord'">
+                        <div data-bind="foreach: $root.typesLookup">
+                            <div data-bind="
+                                text: $data.text,
+                                click: $root.addTypeForFieldInRecordFromOmniBox"
+                             ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="rdf-statement-template">
+        <div 
+            data-bind="
+                using: lookup.customObjects[$data],
+                attr: {id: 'rdf-statement--' + $data}">
+            <strong data-bind="
+                click: $root.open_OmniBox_for_RDF_predicate_in_statement,
+                text: $root.customObjects[$data.predicate_id()].name,
+                attr: {id: 'rdf-predicate-in-statement--' + $data.id}"></strong>
+            <span class="webpad-color-orange">:</span>
+            <span data-bind="
+                if: typeof($data.subject_id()) !== 'undefined'
+                ">
+                <strong data-bind="
+                    click: $root.open_OmniBox_for_actual_RDF_subject_in_statement,
+                    text: $root.customObjects[$data.subject_id()].name,
+                    attr: {id: 'rdf-subject-in-statement--' + $data.id}"></strong>
+            </span>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                    data-bind="
+                        visible: typeof($data.subject_id()) === 'undefined',
+                        click: $root.open_OmniBox_for_RDF_subject_in_statement, 
+                        attr: {id: 'add-RDF-subject-in-statement--' + $data.id}">
+                    + rdf-subject
+            </div>
+        </div>
+
+    </script>
+
+
+    <script type="text/html" id="record-field-template">
+        <div 
+            data-bind="
+                using: lookup.customObjects[$data],
+                attr: {id: $data}">
+            <span data-bind="if: typeof($data.recordFieldTypeGuidToUse()) !== 'undefined' ">
+                <strong class="webpad-color-orange" data-bind="text: $root.customObjects[$data.recordFieldTypeGuidToUse()].name"></strong>
+            </span>
+            <div style="font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                    data-bind=" 
+                        visible: typeof($data.recordFieldTypeGuidToUse()) === 'undefined',
+                        click: $root.openOmniBoxForFieldTypeInRecord, 
+                        attr: {id: 'add-field-type-in-record--' + $data.id}">
+                    + type
+            </div>
+            <strong data-bind="text: $data.recordFieldName"></strong>
+            <span>=</span>
+            <span data-bind="
+                if: typeof($data.recordFieldValueGuidToUse()) !== 'undefined',
+                ">
+                <span data-bind="template: { name: 'body-element-template', data: $data.recordFieldValueGuidToUse() }" >
+                </span>
+            </span>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                    data-bind="
+                        visible: typeof($data.recordFieldValueGuidToUse()) === 'undefined',
+                        click: $root.openOmniBoxForFieldValueInRecord, 
+                        attr: {id: 'add-field-value-in-record--' + $data.id}">
+                    + value
+            </div>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                    data-bind="
+                        visible: $data.typeMissmatch,
+                        click: $root.openOmniBoxForRecordFieldTypeMissmatchFix, 
+                        attr: {id: 'fix-type-missmatch-in-record-field--' + $data.id}">
+                    type missmatch
+            </div>
+        </div>
+
+    </script>
+    <script type="text/html" id="record-template">
+        <div class="lisperanto-function-definition lisperanto-ui-element"
+            data-bind="
+                attr: 
+                {
+                    id: $data.id
+                }">
+            <div 
+                data-bind="
+                    click: $root.openOmniBoxForRecordHeader,
+                    attr: 
+                    {
+                        id: 'record-header--' + $data.id
+                    }" >
+                <span style="font-size: 1rem;" class="my-function" data-bind="text: type"></span>
+                <span class="my-function-name" style="font-size: 1rem;" data-bind="text: name"></span>
+            </div>
+            <div style="margin-left: 2rem;" data-bind="template: { name: 'record-field-template', foreach: fields }">
+            </div>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                    data-bind=" 
+                        click: $root.openOmniBoxForAddingFieldInRecord, 
+                        attr: {id: 'add-field-in-record--' + $data.id}">
+                    add field
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="rdf-entry-template">
+        <div class="lisperanto-function-definition lisperanto-ui-element"
+            data-bind="
+                attr: 
+                {
+                    id: $data.id
+                }">
+            <div 
+                data-bind="
+                    attr: 
+                    {
+                        id: 'rdf-entry-header--' + $data.id
+                    }" >
+                <span style="font-size: 1rem;" class="my-function" data-bind="text: type"></span>
+            </div>
+            <div
+                style="margin-left: 2rem;"
+                data-bind="
+                    attr: {id: 'rdf-entry-id-statement--' + $data.id}">
+                <strong data-bind="
+                    text: 'id',
+                    attr: {id: 'rdf-entry-id-predicate--' + $data.id}"></strong>
+                <span class="webpad-color-orange">:</span>
+                <span>
+                    <span 
+                        style="font-size: 1rem;"
+                        class="my-function-name"
+                        data-bind="
+                            text: $data.id,
+                            attr: {id: 'rdf-entry-id-value--' + $data.id}"></span>
+                </span>
+            </div>
+            <div 
+                style="margin-left: 2rem;"
+                data-bind="
+                    attr: {id: 'rdf-entry-name-statement--' + $data.id}">
+                <strong data-bind="
+                    text: 'name',
+                    attr: {id: 'rdf-entry-name-predicate--' + $data.id}"></strong>
+                <span class="webpad-color-orange">:</span>
+                <span data-bind="
+                    if: typeof($data.name()) !== 'undefined'
+                    ">
+                    <strong data-bind="
+                        text: $data.name,
+                        attr: {id: 'rdf-entry-name-value--' + $data.id}"></strong>
+                </span>
+                <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="
+                            visible: typeof($data.name()) === 'undefined',
+                            click: $root.open_OmniBox_for_adding_name_to_rdf_entry,
+                            attr: {id: 'add-rdf-entry-name-value--' + $data.id}">
+                        + name
+                </div>
+            </div>
+            <div 
+                style="margin-left: 2rem;"
+                class="webpad-color-light-pink">
+                Statements:
+            </div>
+            <div style="margin-left: 2rem;" data-bind="template: { name: 'rdf-statement-template', foreach: statements }">
+            </div>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                data-bind=" 
+                    click: $root.open_OmniBox_for_adding_statement_to_rdf_entry, 
+                    attr: {id: 'add-statement-to-rdf-entry--' + $data.id}">
+                    + statement
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="rdf-real-statement-template">
+        <div class="lisperanto-function-definition lisperanto-ui-element"
+            data-bind="
+                attr: 
+                {
+                    id: $data.id
+                }">
+            <div 
+                data-bind="
+                    attr: 
+                    {
+                        id: 'rdf-real-statement-header--' + $data.id
+                    }" >
+                <span style="font-size: 1rem;" class="my-function" data-bind="text: type"></span>
+            </div>
+            <div
+                style="margin-left: 2rem;"
+                data-bind="
+                    attr: {id: 'rdf-real-statement-id-statement--' + $data.id}">
+                <strong data-bind="
+                    text: 'id',
+                    attr: {id: 'rdf-real-statement-id-predicate--' + $data.id}"></strong>
+                <span class="webpad-color-orange">:</span>
+                <span>
+                    <span 
+                        style="font-size: 1rem;"
+                        class="my-function-name"
+                        data-bind="
+                            text: $data.id,
+                            attr: {id: 'rdf-real-statement-id-value--' + $data.id}"></span>
+                </span>
+            </div>
+            <div 
+                style="margin-left: 2rem;"
+                data-bind="
+                    attr: {id: 'rdf-real-statement-object_id-statement--' + $data.id}">
+                <strong data-bind="
+                    text: 'object_id',
+                    attr: {id: 'rdf-real-statement-object_id-predicate--' + $data.id}"></strong>
+                <span class="webpad-color-orange">:</span>
+                <span data-bind="
+                    if: typeof($data.object_id) !== 'undefined'
+                    ">
+                    <strong data-bind="
+                        text: $data.object_id,
+                        attr: {id: 'rdf-statement-object_id-value--' + $data.object_id}"></strong>
+                </span>
+            </div>
+            <div 
+                style="margin-left: 2rem;"
+                class="webpad-color-light-pink">
+                Statements:
+            </div>
+            <div style="margin-left: 2rem;" data-bind="template: { name: 'rdf-statement-template', foreach: statements }">
+            </div>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                data-bind=" 
+                    click: $root.open_OmniBox_for_adding_statement_to_rdf_entry, 
+                    attr: {id: 'add-statement-to-rdf-entry--' + $data.id}">
+                    + statement
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="rdf-predicate-template">
+        <div class="lisperanto-function-definition lisperanto-ui-element"
+            data-bind="
+                attr: 
+                {
+                    id: $data.id
+                }">
+            <div 
+                data-bind="
+                    attr: 
+                    {
+                        id: 'rdf-predicate-header--' + $data.id
+                    }" >
+                <span style="font-size: 1rem;" class="my-function" data-bind="text: type"></span>
+            </div>
+            <div
+                style="margin-left: 2rem;"
+                data-bind="
+                    attr: {id: 'rdf-predicate-id-statement--' + $data.id}">
+                <strong data-bind="
+                    text: 'id',
+                    attr: {id: 'rdf-predicate-id-predicate--' + $data.id}"></strong>
+                <span class="webpad-color-orange">:</span>
+                <span>
+                    <span 
+                        style="font-size: 1rem;"
+                        class="my-function-name"
+                        data-bind="
+                            text: $data.id,
+                            attr: {id: 'rdf-predicate-id-value--' + $data.id}"></span>
+                </span>
+            </div>
+            <div 
+                style="margin-left: 2rem;"
+                data-bind="
+                    attr: {id: 'rdf-predicate-name-statement--' + $data.id}">
+                <strong data-bind="
+                    text: 'name',
+                    attr: {id: 'rdf-predicate-name-predicate--' + $data.id}"></strong>
+                <span class="webpad-color-orange">:</span>
+                <span data-bind="
+                    if: typeof($data.name()) !== 'undefined'
+                    ">
+                    <strong data-bind="
+                        text: $data.name,
+                        attr: {id: 'rdf-predicate-name-value--' + $data.id}"></strong>
+                </span>
+                <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind="
+                            visible: typeof($data.name()) === 'undefined',
+                            attr: {id: 'add-rdf-predicate-name-value--' + $data.id}">
+                        + name
+                </div>
+            </div>
+            <div 
+                style="margin-left: 2rem;"
+                class="webpad-color-light-pink">
+                Statements:
+            </div>
+            <div style="margin-left: 2rem;" data-bind="template: { name: 'rdf-statement-template', foreach: statements }">
+            </div>
+            <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                data-bind=" 
+                    click: $root.open_OmniBox_for_adding_statement_to_rdf_entry, 
+                    attr: {id: 'add-statement-to-rdf-entry--' + $data.id}">
+                    + statement
+            </div>
+        </div>
+    </script>
+
+    
+    <script type="text/html" id="function-definition-template">
+        <div class="lisperanto-function-definition lisperanto-ui-element"
+            data-bind="
+                style: 
+                { 
+                    left: $root.globalOffsetX() + offsetX(), 
+                    top: $root.globalOffsetY() + offsetY() 
+                },
+                attr: 
+                {
+                    id: $data.id
+                }">
+            <div 
+                data-bind="
+                    click: $root.openOmniBoxForFunctionHeaderDefinition,
+                    attr: 
+                    {
+                        id: 'function-definition-header--' + $data.id
+                    }" >
+                <span style="font-size: 1rem;" class="my-function" data-bind="text: type"></span>
+                <span class="my-function-name" style="font-size: 1rem;" data-bind="text: name"></span>
+            </div>
+            <div>
+                parameters:
+            </div>
+            <div style="margin-left: 2rem;" data-bind="template: { name: 'parameter-symbol-template', foreach: parameters }">
+            </div>
+            <span data-bind="if: type !== 'built-in-function' ">
+                <div style="margin:0.5em; font-size: 1rem;" class="lisperanto-div-button webpad-color-purple" 
+                        data-bind=" 
+                            click: $root.openOmniBoxForAddingParametersInFunctionDefiniton, 
+                            attr: {id: 'add-function-parameter--' + $data.id}">
+                        add
+                </div>
+                <div>
+                    body:
+                </div>
+                <div style="margin-left: 0rem;" data-bind="template: { name: 'body-element-template', data: body }">
+                </div>
+            </span>
+        </div>
+    </script>
+    <script type="text/html" id="sandbox-template">
+        <div class="lisperanto-ui-element" 
+            
+         data-bind="style: 
+            { 
+                left: inWorldOffsetX, 
+                top: inWorldOffsetY 
+            }, 
+            attr: 
+            {
+                id: $data.id
+            }">
+            <div class="lisperanto-sandbox-title">
+                <span class="my-function-name" style="font-size: 1.5rem;"
+                    data-bind="
+                    click: $root.openOmniBoxForSandboxHeaderDefinition,
+                    attr: 
+                    {
+                        id: 'sandbox-definition-header--' + $data.id
+                    }"
+                    >sandbox</span>
+            </div>
+            <div class="lisperanto-sandbox-stripes">
+                <span>
+                    <div data-bind="template: { name: 'body-element-template', data: body }">
+                    </div>
+                </span>
+            </div>
+        </div>
+    </script>
+    <script type="text/html" id="parameter-value-template">
+        <div>
+            <!-- <span data-bind="text: lookup.customObjects[$data].guidToUse" ></span> -->
+            <div data-bind="template: { name: 'body-element-template', data: lookup.customObjects[$data].guidToUse() }" >
+            </div>
+            <span data-bind='if: typeof(lookup.customObjects[$data].guidToUse()) === "undefined", attr: {id: $data} '>
+                <div style="font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+                    data-bind="click: $root.focusOnParameter">
+                    <span data-bind="text: lookup.customObjects[lookup.customObjects[$data].parameterGuid].parameterName + ':' "></span>
+                </div>
+            <span>
+        </div>
+    </script>
+    <script type="text/html" id="parameter-symbol-template">
+        <div>
+            <strong data-bind="text: lookup.customObjects[$data].parameterName"></strong>
+        </div>
+    </script>
+    <script type="text/html" id="constant-number-template">
+        <strong data-bind="text: value"></strong>
+    </script>
+    <script type="text/html" id="constant-string-template">
+        "<strong data-bind="text: value"></strong>"
+    </script>
+    <script type="text/html" id="symbol-usage-template">
+        <strong data-bind="text: symbolName"></strong>
+    </script>
+    <script type="text/html" id="function-usage-template">
+        <span
+            data-bind="
+            attr: {id: $data.id}"
+            >
+            <span data-bind="text: '('"></span><span 
+                class="my-function-name" 
+                data-bind="
+                    text: lookup.customObjects[$data.functionGuid].name(), 
+                    click: $root.openOmniBoxForFunctionUsage, 
+                    attr: {id: 'function-name-' + $data.id}"
+                >
+            </span>
+            <div style="margin-left: 2rem;" data-bind="template: { name: 'parameter-value-template', foreach: parameters }" >
+            </div>
+            <span data-bind="text: ')'"></span><span class="my-function-result" data-bind="text: '// ' + prettyPrintEvaluationResult() "></span>
+
+        </span>
+        
+    </script>
+    <script type="text/html" id="record-reference-template">
+        <span
+            data-bind="
+            attr: {id: $data.id}"
+            >
+            <span data-bind="text: 'record-reference: ['"></span><span 
+                class="my-function-name" 
+                data-bind="
+                    text: lookup.customObjects[$data.recordGuid].name(), 
+                    click: $root.openOmniBoxForRecordReference, 
+                    attr: {id: 'record-reference--name-' + $data.id}"
+                >
+            </span><span data-bind="text: ']'"></span><span class="my-function-result" data-bind="text: '// ' + prettyPrintEvaluationResult() "></span>
+
+        </span>
+        
+    </script>
+    <script type="text/html" id="body-element-template">
+        <span data-bind="if:typeof($data) !== 'undefined' && typeof(lookup.customObjects[$data]) !== 'undefined' ">
+            <span data-bind='if: lookup.customObjects[$data].type === "constant-number" '>
+                <span data-bind="template: { name: 'constant-number-template', data: lookup.customObjects[$data] }"></span>
+            </span>
+            <span data-bind='if: lookup.customObjects[$data].type === "constant-string" '>
+                <span data-bind="template: { name: 'constant-string-template', data: lookup.customObjects[$data] }"></span>
+            </span>
+            <span data-bind='if: lookup.customObjects[$data].type === "function-usage" '>
+                <span data-bind="template: { name: 'function-usage-template', data: lookup.customObjects[$data] }"></span>
+            </span>
+            <span data-bind='if: lookup.customObjects[$data].type === "symbol-usage" '>
+                <span data-bind="template: { name: 'symbol-usage-template', data: lookup.customObjects[$data] }"></span>
+            </span>
+            <span data-bind='if: lookup.customObjects[$data].type === "record-reference" '>
+                <span data-bind="template: { name: 'record-reference-template', data: lookup.customObjects[$data] }"></span>
+            </span>
+        </span>
+    </script>
+    <script type="text/html" id="ui-element-template">
+        <div class="lisperanto-ui-element"
+            data-bind="
+                style: 
+                { 
+                    left: inWorldOffsetX(), 
+                    top: inWorldOffsetY()
+                }">
+                <div>
+                    <!-- ko if: $data.type === 'constant-number' -->
+                        <!-- ko template: { name: 'constant-number-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: $data.type === 'function-usage' -->
+                        <!-- ko template: { name: 'function-usage-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: $data.type === 'symbol-usage' -->
+                        <!-- ko template: { name: 'symbol-usage-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: $data.type === 'record' -->
+                        <!-- ko template: { name: 'record-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: $data.type === 'rdf-entry' -->
+                        <!-- ko template: { name: 'rdf-entry-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: $data.type === 'rdf-predicate' -->
+                        <!-- ko template: { name: 'rdf-predicate-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if: $data.type === 'rdf-statement' -->
+                        <!-- ko template: { name: 'rdf-real-statement-template', data: $data} -->
+                        <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+        </div>
+    </script>
+
+    <div 
+        class="webpad-menu-absolute-position webpad-menu-animate-left" 
+        style="display: none;" 
+        data-bind="
+            visible:  $root.menuWasAlreadyOpen(),
+            css: { 
+                'webpad-menu-animate-show-from-left': $root.menuIsOpen(),
+                'webpad-menu-animate-fade-back': !$root.menuIsOpen()
+            },
+            click: $root.infoOnClick
+            ">
+        <div class="w3-row webpad-sky-frame">
+            <div class="w3-col w3-container s12 m12 l12">
+                <span class="webpad-color-yellow" style="font-size: 1.5rem; margin-left: 0.5rem;">
+                    Lisperanto
+                </span>
+                <span class="webpad-color-blue webpad-hide-on-small-screen" style="font-size: 1.3rem;">
+                    : information
+                </span>
+                <span class="webpad-color-blue webpad-hide-on-large-screen" style="font-size: 1rem;">
+                    : information
+                </span>
+                <div style="float: right;" class=" webpad-button-no-border webpad-golden-frame" data-bind="click: $root.toggleMenu">
+                    <span style="font-size: 2rem;">
+                        <img src="svg/times-close-menu.svg" class="webpad-edit-pencil" alt="close menu"/> 
+                    </span>
+                </div>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12">
+                <div class="text-left" style="padding-left: 0.5rem;">
+                    <div class="webpad-color-blue" style="margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 1.2rem;">
+                        Lisperanto is created by Oleksandr Kryvonos, a developer from Odesa, Ukraine.
+                    </div>
+                    <div 
+                        class="webpad-color-purple" 
+                        style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                        feel free to e-mail me: <a 
+                            href="mailto:oleksandr.kryvonos.ods.ua@gmail.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            onclick="lookup.emailMeLinkOnClick(event)"
+                            >oleksandr.kryvonos.ods.ua@gmail.com</a>
+                    </div>
+                    <div
+                        class="lisperanto-patreon">
+                        <a 
+                            href="https://www.patreon.com/o_kryvonos" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            onclick="lookup.patreonLinkOnClick(event)"
+                            >
+                            Support on Patreon
+                        </a>
+
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                                Source code information:
+                        </span>
+                    </div>
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 1rem; margin-top: 0.5rem;" >
+                        <div class="webpad-color-light-pink" style="margin-top: 0.5rem;">
+                            Lisperanto is distributed under MIT license.
+                        </div>
+                        <div class="webpad-color-blue">
+                            Lisperanto is an open-source project: <a 
+                                href="https://github.com/uprun/lisperanto" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                onclick="lookup.githubLinkOnClick(event)"
+                                >https://github.com/uprun/lisperanto</a>
+                        </div>
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                                General information:
+                        </span>
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 1rem; margin-top: 0.5rem;" >
+                        <div class="webpad-color-coral">
+                            Lisperanto is a programming environment and version control system.
+                        </div>
+                        <div class="webpad-color-yellow">
+                            Lisperanto is an AST-based version control system.
+                        </div>
+                        <div class="webpad-color-green">
+                            Lisperanto is a projection editor.
+                        </div>
+                        <div class="webpad-color-pink">
+                            Lisperanto is a structure editor.
+                        </div>
+                        <div class="webpad-color-orange">
+                            Lisperanto is a mono-repository.
+                        </div>
+                        <div class="webpad-color-green">
+                            Lisperanto was inspired by Lisp.
+                        </div>
+                        <div class="webpad-color-coral">
+                            Lisperanto was  inspired by Smalltalk.
+                        </div>
+                        <div class="webpad-color-orange">
+                            Lisperanto is an AST editor.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div 
+        class="webpad-options-absolute-position webpad-options-animate-right" 
+        style="display: none;" 
+        data-bind="
+            visible:  $root.optionsWasAlreadyOpen(),
+            css: { 
+                'webpad-options-animate-show-from-right': $root.optionsIsOpen(),
+                'webpad-options-animate-fade-back': !$root.optionsIsOpen()
+            },
+            click: $root.optionsOnClick">
+        <div class="w3-row webpad-sky-frame">
+            <div class="w3-col w3-container s12 m12 l12">
+                <span class="webpad-color-yellow" style="font-size: 1.5rem; margin-left: 0.5rem;">
+                    Lisperanto
+                </span>
+                <span class="webpad-color-blue webpad-hide-on-small-screen" style="font-size: 1.3rem;">
+                    : options
+                </span>
+                <span class="webpad-color-blue webpad-hide-on-large-screen" style="font-size: 1rem;">
+                    : options
+                </span>
+                <div style="float: right;" class=" webpad-button-no-border webpad-golden-frame" data-bind="click: $root.toggleOptions">
+                    <span style="font-size: 2rem;">
+                        <img src="svg/times-close-menu.svg" class="webpad-edit-pencil" alt="close options"/> 
+                    </span>
+                </div>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                        Background:
+                </span>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem;">
+                <div style="font-size: 1.4rem; background: #333" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-coral" 
+                        data-bind="click: $root.changeBackground">
+                        graphite
+                </div>
+                <div style="font-size: 1.4rem; background: #000" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+                        data-bind="click: $root.changeBackgroundToDefault">
+                        darkness
+                </div>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                        Other:
+                </span>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem;">
+                <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+                    data-bind="click: $root.createFunction">
+                    create function
+                </div>
+                <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+                    onclick="typeof(lookup) !== 'undefined' && lookup.removeEverything()">
+                    Reset
+                </div>
+                <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+                    onclick="typeof(lookup) !== 'undefined' && lookup.toggleFullScreen()">
+                    f - FullScreen
+                </div>
+                <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-coral" 
+                    onclick="typeof(lookup) !== 'undefined' && lookup.toggleShowBorders()">
+                    Borders
+                </div>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                        Navigation:
+                </span>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 2rem;">
+                <div class="webpad-color-orange">
+                    Pan with [shift + mouse-move] or for MacBooks - use scroll gesture.
+                </div>
+                <div class="webpad-color-coral">
+                    Use [Tab] key to autocomplete.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lisperanto-global-container" >
+
+        <!-- ko foreach: $root.listOfOpenElements -->
+
+            <!-- ko if: $data.id === 'sandbox-unique' -->
+                <!-- ko template: { name: 'sandbox-template', data: $data} -->
+                <!-- /ko -->
+            <!-- /ko -->
+            <!-- ko ifnot: $data.id === 'sandbox-unique' -->
+                <!-- ko if: $data.type === 'function' || $data.type === 'built-in-function' -->
+                    <!-- ko template: { name: 'function-definition-template', data: $data} -->
+                    <!-- /ko -->
+                <!-- /ko -->
+                <!-- ko ifnot: $data.type === 'function' || $data.type === 'built-in-function'-->
+                    <!-- ko template: { name: 'ui-element-template', data: $data } -->
+                    <!-- /ko -->
+                <!-- /ko -->
+                
+            <!-- /ko -->
+            <!-- ko if: $root.showBorders -->
+                <div style="
+                    position: absolute;
+                    border: aliceblue;
+                    border-width: 2px;
+                    border-style: dotted;
+                    z-index: 0;
+                    "
+                data-bind="style: 
+                { 
+                    left: box().left, 
+                    top: box().top, 
+                    width: box().width,
+                    height: $data.box().height
+                }," >
+
+                </div>
+            <!-- /ko -->
+            
+
+        <!-- /ko -->
+
+        
+        <!-- ko template: { name: 'contextual-omni-box-template', data: $root.canvasOmniBox } -->
+        <!-- /ko -->
+        <!-- ko template: { name: 'contextual-omni-wheel-template', data: $root.omniWheel } -->
+        <!-- /ko -->
+        <div class="lisperanto-anchor-sandbox webpad-golden-frame" style="width: 2rem; height: 2rem; visibility: hidden;">
+
+        </div>
+    </div>
+    <div class="text-center lisperanto-tool-bar">
+        <div class="webpad-color-orange" style="margin-left: 2rem;">
+            Pan with [shift + mouse-move] or for MacBooks - use scroll gesture.
+        </div>
+        <br/>
+        <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+            data-bind="click: $root.toggleMenu">
+            <span style="font-size: 1rem; vertical-align: middle;">
+                <img src="svg/bars.svg" class="webpad-edit-pencil" alt="toggle menu"/> 
+            </span>
+            i - info
+        </div>
+        <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+            data-bind="click: $root.toggleOptions">
+            <span style="font-size: 1rem; vertical-align: middle;">
+                <img src="svg/cogwheel.svg" class="webpad-edit-pencil" alt="toggle options"/> 
+            </span>
+            o - options
+        </div>
+        
+    </div>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/knockoutjs/3.5.1/Content/Scripts/knockout-3.5.1.js" asp-append-version="true"></script>
+    <script src="js/lisperanto.js" asp-append-version="true"></script>
+    <script src="js/removeEverything.js" asp-append-version="true"></script>
+    <script src="js/toggleFullScreen.js" asp-append-version="true"></script>
+    <script src="js/toggleMenu.js" asp-append-version="true"></script>
+    <script src="js/toggleOptions.js" asp-append-version="true"></script>
+    <script src="js/changeBackground.js" asp-append-version="true"></script>
+    <script src="js/scroll.js" asp-append-version="true"></script>
+</body>
+</html>

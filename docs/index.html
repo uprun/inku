@@ -1,0 +1,173 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yellow</title>
+    <link rel="stylesheet" href="css/site.css" />
+    <link rel="stylesheet" href="css/webpad.css" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+</head>
+<body 
+    class="lisperanto-main-body" 
+    style="background-color: #0c4bac; " 
+    onpointermove="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerMove()"
+    ontouchmove="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchMove()"
+    ontouchend="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    ontouchcancel="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    ontouchleave="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    data-bind=
+        "click: $root.bodyOnClick,
+        event: 
+            {
+                keydown: $root.bodyKeyDown
+            },
+        style: 
+            { 
+                background: $root.backgroundColor() 
+            }">
+
+    <div 
+        class="webpad-menu-absolute-position webpad-menu-animate-left" 
+        style="display: none;" 
+        data-bind="
+            visible:  $root.menuWasAlreadyOpen(),
+            css: { 
+                'webpad-menu-animate-show-from-left': $root.menuIsOpen(),
+                'webpad-menu-animate-fade-back': !$root.menuIsOpen()
+            },
+            click: $root.infoOnClick
+            ">
+        <div class="w3-row webpad-sky-frame">
+            <div class="w3-col w3-container s12 m12 l12">
+                <span class="webpad-color-yellow" style="font-size: 1.5rem; margin-left: 0.5rem;">
+                    Yellow
+                </span>
+                <span class="webpad-color-blue webpad-hide-on-small-screen" style="font-size: 1.3rem;">
+                    : information
+                </span>
+                <span class="webpad-color-blue webpad-hide-on-large-screen" style="font-size: 1rem;">
+                    : information
+                </span>
+                <div style="float: right;" class=" webpad-button-no-border webpad-golden-frame" data-bind="click: $root.toggleMenu">
+                    <span style="font-size: 2rem;">
+                        <img src="svg/times-close-menu.svg" class="webpad-edit-pencil" alt="close menu"/> 
+                    </span>
+                </div>
+            </div>
+            <div class="w3-col w3-container s12 m12 l12">
+                <div class="text-left" style="padding-left: 0.5rem;">
+                    <div class="webpad-color-blue" style="margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 1.2rem;">
+                        Yellow is a simple drawing app created by Oleksandr Kryvonos, a developer from Odesa, Ukraine.
+                    </div>
+                    <div 
+                        class="webpad-color-purple" 
+                        style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+                        feel free to e-mail me: <a 
+                            href="mailto:oleksandr.kryvonos.ods.ua@gmail.com" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            onclick="lookup.emailMeLinkOnClick(event)"
+                            >oleksandr.kryvonos.ods.ua@gmail.com</a>
+                    </div>
+                    <div
+                        class="lisperanto-patreon">
+                        <a 
+                            href="https://www.patreon.com/o_kryvonos" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            onclick="lookup.patreonLinkOnClick(event)"
+                            >
+                            Support on Patreon
+                        </a>
+
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                                Source code information:
+                        </span>
+                    </div>
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 1rem; margin-top: 0.5rem;" >
+                        <div class="webpad-color-light-pink" style="margin-top: 0.5rem;">
+                            yellow is distributed under MIT license.
+                        </div>
+                        <div class="webpad-color-blue">
+                            yellow is an open-source project: <a 
+                                href="https://github.com/uprun/yellow" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                onclick="lookup.githubLinkOnClick(event)"
+                                >https://github.com/uprun/yellow</a>
+                        </div>
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                                Patreon supporters:
+                        </span>
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 1rem; margin-top: 0.5rem;" >
+                        <!-- ko foreach: $root.patreonSupporters -->
+                        <div class="webpad-color-coral"
+                            data-bind="text: $data">
+                        </div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="lisperanto-global-container" >
+
+        <!-- ko foreach: $root.listOfOpenElements -->
+
+                <div style="
+                    position: absolute;
+                    border-width: 0.2rem;
+                    border-style: solid;
+                    width: 1rem;
+                    height: 1rem;
+                    z-index: 0;
+                    "
+                data-bind="style: 
+                { 
+                    left: $data.inWorldOffsetX(), 
+                    top: $data.inWorldOffsetY(), 
+                    border: $root.foregroundColour(),
+                    background: $root.foregroundColour()
+                }," >
+
+                </div>
+            
+
+        <!-- /ko -->
+
+    </div>
+    <div class="text-center lisperanto-tool-bar">
+        <div class="webpad-color-orange" style="margin-left: 2rem;">
+            just draw.
+        </div>
+        <br/>
+        <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+            data-bind="click: $root.toggleMenu">
+            <span style="font-size: 1rem; vertical-align: middle;">
+                <img src="svg/bars.svg" class="webpad-edit-pencil" alt="toggle menu"/> 
+            </span>
+            i - info
+        </div>
+        
+    </div>
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/knockoutjs/3.5.1/Content/Scripts/knockout-3.5.1.js" asp-append-version="true"></script>
+    <script src="js/yellow.js" asp-append-version="true"></script>
+    <script src="js/removeEverything.js" asp-append-version="true"></script>
+    <script src="js/toggleFullScreen.js" asp-append-version="true"></script>
+    <script src="js/toggleMenu.js" asp-append-version="true"></script>
+    <script src="js/changeBackground.js" asp-append-version="true"></script>
+    <script src="js/scroll.js" asp-append-version="true"></script>
+</body>
+</html>
