@@ -17,6 +17,12 @@ body {
   background-color: inherit;
   font-family: 'Input Mono', monospace;
 }
+
+.yellow-ink
+{
+  color: #ffff00;
+}
+
 .my-function-result
 {
   color:rgb(218, 116, 21);
