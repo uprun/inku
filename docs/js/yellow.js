@@ -92,7 +92,8 @@ lookup.uuidv4 = function() {
     );
   };
 
-lookup.listOfOpenElements = ko.observableArray([]).extend({ rateLimit: 5 });;
+lookup.listOfOpenElements = ko.observableArray([]).extend({ rateLimit: 5 });
+lookup.listOfImmediateOpenElements = ko.observableArray([]);
 lookup.mapOfOpenElements = {};
 lookup.closeElement = function(obj)
 {
@@ -100,11 +101,14 @@ lookup.closeElement = function(obj)
     lookup.listOfOpenElements.remove(obj);
 };
 
-lookup.openElement = function(obj)
+lookup.openElement = function(obj, immediate=false)
 {
     lookup.listOfOpenElements.push(obj);
     lookup.mapOfOpenElements[obj.id] = obj;
-    console.log("finished openElement");
+    if(immediate)
+    {
+        lookup.listOfImmediateOpenElements.push(obj);
+    }
 };
 
 
@@ -206,7 +210,7 @@ lookup.githubLinkOnClick = function(event)
 lookup.createPoint = function(offset) 
 {
     var uiObject = lookup.createUIObject(offset);
-    lookup.openElement(uiObject);
+    lookup.openElement(uiObject, immediate=true);
 
     var operation = {
         operation: "create-point",
