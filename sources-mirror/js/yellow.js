@@ -59,29 +59,12 @@ lookup.tryRestoreOffsetCoordinates = function(value)
 {
     if(typeof(value.offsetX) === "undefined")
     {
-        value.offsetX = ko.observable(0);
-    }
-    else
-    {
-        value.offsetX = ko.observable(value.offsetX);
+        value.offsetX = 0;
     }
     if(typeof(value.offsetY) === "undefined")
     {
-        value.offsetY = ko.observable(0);
+        value.offsetY = 0;
     }
-    else
-    {
-        value.offsetY = ko.observable(value.offsetY);
-    }
-    value.inWorldOffsetX = ko.computed(function()
-    {
-        return value.offsetX() + lookup.globalOffsetX();
-    });
-
-    value.inWorldOffsetY = ko.computed(function()
-    {
-        return value.offsetY() + lookup.globalOffsetY();
-    });
 };
 
 
@@ -109,7 +92,7 @@ lookup.uuidv4 = function() {
     );
   };
 
-lookup.listOfOpenElements = ko.observableArray([]);
+lookup.listOfOpenElements = ko.observableArray([]).extend({ rateLimit: 5 });;
 lookup.mapOfOpenElements = {};
 lookup.closeElement = function(obj)
 {

@@ -137,14 +137,14 @@
                     position: absolute;
                     border-width: 0.2rem;
                     border-style: solid;
-                    width: 1rem;
-                    height: 1rem;
+                    width: 2px;
+                    height: 2px;
                     z-index: 0;
                     "
                 data-bind="style: 
                 { 
-                    left: $data.inWorldOffsetX(), 
-                    top: $data.inWorldOffsetY(), 
+                    left: $data.offsetX, 
+                    top: $data.offsetY, 
                     border: $root.foregroundColour(),
                     background: $root.foregroundColour()
                 }," >
