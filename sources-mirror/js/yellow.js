@@ -47,6 +47,14 @@ lookup.loadFromStorage = function()
     }
 };
 
+lookup.showLoadedObjects = function()
+{
+    for (const [key, value] of Object.entries(lookup.customObjects)) 
+    {
+        lookup.openElement(value);
+    }
+};
+
 lookup.tryRestoreOffsetCoordinates = function(value)
 {
     if(typeof(value.offsetX) === "undefined")
@@ -235,6 +243,7 @@ $(document).ready(function()
     lookup.backgroundApplySaved();
     viewModel.ApplyLookupToSelf();
     ko.applyBindings(viewModel);
+    lookup.showLoadedObjects();
 });
 
 
