@@ -11,11 +11,9 @@ lookup.globalMinX = ko.observable(-2048);
 lookup.globalMinY = ko.observable(-2048);
 
 lookup.bodyOnWheel = function() {
-    event.preventDefault();
-    const deltaY = event.deltaY;
-    const deltaX = event.deltaX;
+    
     //console.log(event);
-    lookup.applyMovement(deltaY, deltaX);
+    //lookup.applyMovement(deltaY, deltaX);
   
     //scale += event.deltaY * -0.01;
 };
@@ -25,22 +23,14 @@ lookup.bodyOnPointerMove = function()
     //console.log(event);
     if(event.shiftKey)
     {
-        lookup.applyMovement(-event.movementY, -event.movementX);
+        lookup.createPoint({x: event.pageX, y: event.pageY});
     }
 
-};
+    if(event.buttons > 0)
+    {
+        lookup.createPoint({x: event.pageX, y: event.pageY});
+    }
 
-lookup.applyMovement = function (deltaY, deltaX) 
-{
-    var newOffsetY = lookup.globalOffsetY() - deltaY * lookup.globalOffsetZ();
-    newOffsetY = Math.min(newOffsetY, lookup.globalMaxY());
-    newOffsetY = Math.max(newOffsetY, lookup.globalMinY());
-    lookup.globalOffsetY(newOffsetY);
-
-    var newOffsetX = lookup.globalOffsetX() - deltaX * lookup.globalOffsetZ();
-    newOffsetX = Math.min(newOffsetX, lookup.globalMaxX());
-    newOffsetX = Math.max(newOffsetX, lookup.globalMinX());
-    lookup.globalOffsetX(newOffsetX);
 };
 
 lookup.previosTouch = undefined;
@@ -53,13 +43,7 @@ lookup.bodyOnTouchMove = function()
     {
         const clientX = touches[0].clientX;
         const clientY = touches[0].clientY;
-        if(typeof(lookup.previosTouch) !== "undefined")
-        {
-            var deltaX = lookup.previosTouch.x - clientX;
-            var deltaY = lookup.previosTouch.y - clientY;
-            lookup.applyMovement(deltaY, deltaX);
-        }
-        lookup.previosTouch = {x: clientX, y: clientY};
+        lookup.createPoint({x: clientX, y: clientY});
     }
 };
 

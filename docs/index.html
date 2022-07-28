@@ -85,6 +85,14 @@
                     </div>
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.removeEverything()">
+                            Reset
+                        </span>
+                    </div>
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
                                 Source code information:
                         </span>
@@ -129,20 +137,43 @@
                     position: absolute;
                     border-width: 0.2rem;
                     border-style: solid;
-                    width: 1rem;
-                    height: 1rem;
+                    width: 2px;
+                    height: 2px;
                     z-index: 0;
                     "
                 data-bind="style: 
                 { 
-                    left: $data.inWorldOffsetX(), 
-                    top: $data.inWorldOffsetY(), 
+                    left: $data.offsetX, 
+                    top: $data.offsetY, 
                     border: $root.foregroundColour(),
                     background: $root.foregroundColour()
                 }," >
 
                 </div>
             
+
+        <!-- /ko -->
+
+        <!-- ko foreach: $root.listOfImmediateOpenElements -->
+
+            <div style="
+                position: absolute;
+                border-width: 0.2rem;
+                border-style: solid;
+                width: 2px;
+                height: 2px;
+                z-index: 0;
+                "
+            data-bind="style: 
+            { 
+                left: $data.offsetX, 
+                top: $data.offsetY, 
+                border: $root.foregroundColour(),
+                background: $root.foregroundColour()
+            }," >
+
+            </div>
+
 
         <!-- /ko -->
 
