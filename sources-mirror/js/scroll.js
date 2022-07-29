@@ -10,6 +10,8 @@ lookup.globalMaxY = ko.observable(2048);
 lookup.globalMinX = ko.observable(-2048);
 lookup.globalMinY = ko.observable(-2048);
 
+lookup.pointerType = ko.observable("");
+
 lookup.bodyOnWheel = function() {
     
     //console.log(event);
@@ -31,6 +33,8 @@ lookup.bodyOnPointerMove = function()
         lookup.createPoint({x: event.pageX, y: event.pageY});
     }
 
+    lookup.pointerType(event.pointerType);
+
 };
 
 lookup.previosTouch = undefined;
@@ -45,6 +49,8 @@ lookup.bodyOnTouchMove = function()
         const clientY = touches[0].clientY;
         lookup.createPoint({x: clientX, y: clientY});
     }
+
+    lookup.pointerType(event.pointerType);
 };
 
 lookup.bodyOnTouchEnd = function()
