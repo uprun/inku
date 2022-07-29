@@ -17,6 +17,7 @@
     ontouchend="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
     ontouchcancel="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
     ontouchleave="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    onresize="typeof(lookup) !== 'undefined' && lookup.onresize()"
     data-bind=
         "click: $root.bodyOnClick,
         event: 
@@ -128,56 +129,8 @@
             </div>
         </div>
     </div>
-    
-    <div class="lisperanto-global-container" >
 
-        <!-- ko foreach: $root.listOfOpenElements -->
-
-                <div style="
-                    position: absolute;
-                    border-width: 0.2rem;
-                    border-style: solid;
-                    width: 2px;
-                    height: 2px;
-                    z-index: 0;
-                    "
-                data-bind="style: 
-                { 
-                    left: $data.offsetX, 
-                    top: $data.offsetY, 
-                    border: $root.foregroundColour(),
-                    background: $root.foregroundColour()
-                }," >
-
-                </div>
-            
-
-        <!-- /ko -->
-
-        <!-- ko foreach: $root.listOfImmediateOpenElements -->
-
-            <div style="
-                position: absolute;
-                border-width: 0.2rem;
-                border-style: solid;
-                width: 2px;
-                height: 2px;
-                z-index: 0;
-                "
-            data-bind="style: 
-            { 
-                left: $data.offsetX, 
-                top: $data.offsetY, 
-                border: $root.foregroundColour(),
-                background: $root.foregroundColour()
-            }," >
-
-            </div>
-
-
-        <!-- /ko -->
-
-    </div>
+    <canvas id="myCanvas" class="yellow-canvas-full-screen" ></canvas>
     <div class="text-center lisperanto-tool-bar">
         <div class="webpad-color-orange" style="margin-left: 2rem;">
             just draw.
@@ -200,5 +153,6 @@
     <script src="js/toggleMenu.js" asp-append-version="true"></script>
     <script src="js/changeBackground.js" asp-append-version="true"></script>
     <script src="js/scroll.js" asp-append-version="true"></script>
+    <script src="js/onresize.js" asp-append-version="true"></script>
 </body>
 </html>
