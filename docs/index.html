@@ -93,6 +93,15 @@
                         </span>
                     </div>
 
+
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.toggleFullScreen()">
+                            Full-screen
+                        </span>
+                    </div>
+
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
                                 Source code information:
@@ -132,8 +141,7 @@
 
     <canvas id="myCanvas" class="yellow-canvas-full-screen" ></canvas>
     <div class="text-center lisperanto-tool-bar">
-        <div class="webpad-color-orange" style="margin-left: 2rem;">
-            just draw.
+        <div class="webpad-color-orange" style="margin-left: 2rem;" data-bind="text: 'just draw with ' + lookup.pointerType()">
         </div>
         <br/>
         <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
