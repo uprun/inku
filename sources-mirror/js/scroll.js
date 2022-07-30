@@ -59,6 +59,4 @@ lookup.bodyOnTouchMove = function()
             lookup.createPoint({x: clientX, y: clientY, start: false, finish: false});
         }
     }
-
-    lookup.pointerType(event.pointerType);
 };
