@@ -14,15 +14,16 @@ window.addEventListener("pointerup", function(e) {
     lookup.createPoint({x: e.pageX, y: e.pageY, start: false, finish: true});
   });
 
-lookup.bodyOnPointerMove = function(event) 
+  window.addEventListener("pointermove", function(event) 
 {
    if(lookup.mouseIsDown) {
-      let events = event.getCoalescedEvents();
-      for(let e of events) {
+    let events = typeof(event.getCoalescedEvents) === "function"? event.getCoalescedEvents() : [event];
+    for(let e of events) 
+    {
         lookup.createPoint({x: e.pageX, y: e.pageY, start: false, finish: false});
-      }
+    }
    }
-};
+});
 
 lookup.previosTouch = undefined;
 
