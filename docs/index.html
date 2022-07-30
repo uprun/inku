@@ -13,6 +13,9 @@
     class="lisperanto-main-body" 
     style="background-color: #0c4bac; "
     onresize="typeof(lookup) !== 'undefined' && lookup.onresize()"
+    ontouchend="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    ontouchcancel="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
+    ontouchleave="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
     data-bind=
         "click: $root.bodyOnClick,
         event: 

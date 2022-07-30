@@ -90,6 +90,9 @@ lookup.draw_a_point = function(obj)
 
     var lineSize = 2;
 
+    // drawing example took from https://stackoverflow.com/questions/5258424/how-to-set-mousemove-update-speed
+    // plus https://www.w3schools.com/tags/canvas_linejoin.asp
+
     if(obj.finish)
     {
         ctx.stroke();
@@ -177,7 +180,8 @@ lookup.bodyOnClick = function(e)
     {
         x: event.pageX,
         y: event.pageY,
-        startLine: true
+        start: true,
+        finish: false
     };
     
     if(lookup.menuIsOpen())
@@ -186,10 +190,10 @@ lookup.bodyOnClick = function(e)
     }
     else
     {
-        console.log(event);
         lookup.createPoint(offset);
-
-        // create point
+        offset.start = false;
+        offset.finish = true;
+        lookup.createPoint(offset);
     }
 };
 

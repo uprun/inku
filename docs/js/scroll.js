@@ -21,3 +21,10 @@ window.addEventListener("pointermove", function(event) {
       }
    }
   });
+
+lookup.bodyOnTouchEnd = function(e)
+{
+    console.log("bodyOnTouchEnd");
+    lookup.mouseIsDown = false;
+    lookup.createPoint({x: e.pageX, y: e.pageY, start: false, finish: true});
+};
