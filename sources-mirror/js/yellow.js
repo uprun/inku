@@ -1,5 +1,6 @@
 ﻿var lookup = {};
-lookup.customObjects = {};
+
+lookup.points = [];
 
 // as of date 2022-07-27
 lookup.patreonSupporters = ko.observableArray(
@@ -14,43 +15,28 @@ lookup.operations = [];
 lookup.operationsPush = function(some)
 {
     lookup.operations.push(some);
-    var toSerialize = {};
-    for (const [key, value] of Object.entries(lookup.customObjects)) {
-        var toAdd = {};
-        for (const [keyInner, valueInner] of Object.entries(value)) {
-            if(typeof(valueInner) === 'function')
-            {
-                toAdd[keyInner] = valueInner();
-            }else
-            {
-                toAdd[keyInner] = valueInner;
-            }
-        }
-        toSerialize[key] = toAdd;
-    }
-    var data = JSON.stringify(toSerialize);
-    localStorage.setItem('customObjects', data);
+    var data = JSON.stringify(lookup.points);
+    localStorage.setItem('points', data);
 };
 
 lookup.loadFromStorage = function()
 {
     lookup.localStorage = localStorage;
-    var stored = localStorage.getItem('customObjects');
+    var stored = localStorage.getItem('points');
     if(typeof(stored) !== 'undefined' && stored != null)
     {
         var parsed = JSON.parse(stored);
-        for (const [key, value] of Object.entries(parsed)) 
-        {
-            lookup.customObjects[value.id] = value;
-        }
+        lookup.points = parsed;
     }
 };
 
 lookup.showLoadedObjects = function()
 {
-    for (const [key, value] of Object.entries(lookup.customObjects)) 
+    var k = 0; 
+    for(; k < lookup.points.length; k++ )
     {
-        lookup.draw_a_point(value);
+        lookup.draw_a_point(lookup.points[k]);
+
     }
 };
 
@@ -58,16 +44,12 @@ lookup.freeIndex = 0;
 
 lookup.createUIObject = function(offset)
 {
+    offset.id = lookup.freeIndex;
 
-    var toAdd = {
-        id: lookup.freeIndex,
-        offsetX: offset.x,
-        offsetY: offset.y
-    };
     lookup.freeIndex += 1;
 
-    lookup.customObjects[toAdd.id] = toAdd;
-    return toAdd;
+    lookup.customObjects[offset.id] = offset;
+    return offset;
 };
 
 
@@ -88,26 +70,55 @@ lookup.closeElement = function(obj)
 
 lookup.initCanvas = function()
 {
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
+    lookup.canvas = document.getElementById("myCanvas");
     
-    if(canvas.width !== document.body.clientWidth ||
-        canvas.height !== document.body.clientHeight)
+    if(lookup.canvas.width !== document.body.clientWidth ||
+        lookup.canvas.height !== document.body.clientHeight)
     {
-        canvas.width = document.body.clientWidth;
-        canvas.height = document.body.clientHeight;
+        lookup.canvas.width = document.body.clientWidth;
+        lookup.canvas.height = document.body.clientHeight;
         lookup.showLoadedObjects();
     }
 };
 
+lookup.canvas = document.getElementById("myCanvas");
+
 lookup.draw_a_point = function(obj)
 {
     lookup.mapOfOpenElements[obj.id] = obj;
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
+    var ctx = lookup.canvas.getContext("2d");
 
-    ctx.fillStyle = "#FFFF00";
-    ctx.fillRect(obj.offsetX, obj.offsetY, 2, 2);
+    var lineSize = 2;
+
+    if(obj.finish)
+    {
+        ctx.stroke();
+    }
+    else
+    {
+        if(obj.start)
+        {
+            ctx.beginPath();
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "#FFFF00";
+            ctx.lineWidth = lineSize;
+            ctx.moveTo(obj.x, obj.y);
+        }
+        else
+        {
+            ctx.lineTo(obj.x, obj.y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
+            ctx.strokeStyle = "#FFFF00";
+            ctx.lineWidth = lineSize;
+            ctx.moveTo(obj.x, obj.y);
+        }
+
+    }
+    
 };
 
 
@@ -161,11 +172,12 @@ function Yellow()
 
 lookup.bodyOnClick = function(e)
 {
-    //console.log(event);
+    
     var offset = 
     {
         x: event.pageX,
-        y: event.pageY
+        y: event.pageY,
+        startLine: true
     };
     
     if(lookup.menuIsOpen())
@@ -174,6 +186,7 @@ lookup.bodyOnClick = function(e)
     }
     else
     {
+        console.log(event);
         lookup.createPoint(offset);
 
         // create point
@@ -208,12 +221,11 @@ lookup.githubLinkOnClick = function(event)
 
 lookup.createPoint = function(offset) 
 {
-    var uiObject = lookup.createUIObject(offset);
-    lookup.draw_a_point(uiObject);
+    lookup.points.push(offset);
+    lookup.draw_a_point(offset);
 
     var operation = {
         operation: "create-point",
-        guid: uiObject.id,
         offset: offset
     };
     lookup.operationsPush(operation);
@@ -229,10 +241,8 @@ lookup.windowSize = ko.observable(
 .extend({ rateLimit: 500 });
 
 lookup.windowSize.subscribe(function(newValue) {
-    var canvas = document.getElementById("myCanvas");
-    var ctx = canvas.getContext("2d");
-    canvas.width = newValue.width;
-    canvas.height = newValue.height;
+    lookup.canvas.width = newValue.width;
+    lookup.canvas.height = newValue.height;
     lookup.showLoadedObjects();
     console.log("resize");
 });
