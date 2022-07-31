@@ -11,6 +11,36 @@ lookup.localization =
     ': settings': {
         "Ukrainian": ": налаштування"
     },
+    'is a simple drawing app created by Oleksandr Kryvonos, a developer from Odesa, Ukraine.': {
+        "Ukrainian": "це простий застосунок для малювання розроблений Олександром Кривоносом, програмістом із міста Одеси, Україна."
+    },
+    'feel free to e-mail me:': {
+        "Ukrainian": "надіслати мені ємейл доволі просто:"
+    },
+    'Support on Patreon': {
+        "Ukrainian": "Пітдримати на Патреоні"
+    },
+    'Privacy policy': {
+        "Ukrainian": "Політика конфіденційності"
+    },
+    'Full-screen': {
+        "Ukrainian": "Повний екран"
+    },
+    'Source code information:': {
+        "Ukrainian": "Інформація про текст програми:"
+    },
+    'inku': {
+        "Ukrainian": "інку"
+    },
+    'is distributed under MIT license.': {
+        "Ukrainian": "розповсюджується за ліцензією МІТ."
+    },
+    'is an open-source project:': {
+        "Ukrainian": "це проєкт із вільним доступом до тексту програми:"
+    },
+    'Development is supported by:': {
+        "Ukrainian": "Розробка підтримується завдяки меценатам:"
+    },
 };
 
 lookup.language = ko.observable("Ukrainian");

@@ -48,8 +48,8 @@
             ">
         <div class="w3-row webpad-sky-frame">
             <div class="w3-col w3-container s12 m12 l12">
-                <span class="webpad-color-yellow" style="font-size: 1.5rem; margin-left: 0.5rem;">
-                    inku
+                <span class="webpad-color-yellow" style="font-size: 1.5rem; margin-left: 0.5rem;"
+                    data-bind="text: lookup.calculatedLocalization()('inku')">
                 </span>
                 <span class="webpad-color-blue webpad-hide-on-small-screen" style="font-size: 1.3rem;" 
                     data-bind="text: lookup.calculatedLocalization()(': settings')">
@@ -85,14 +85,20 @@
             <div class="w3-col w3-container s12 m12 l12">
                 <div class="text-left" style="padding-left: 0.5rem;">
                     <div class="webpad-color-blue" style="margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 1.2rem;">
-                        <span class="webpad-color-yellow">
-                            inku
-                        </span> is a simple drawing app created by Oleksandr Kryvonos, a developer from Odesa, Ukraine.
+                        <span class="webpad-color-yellow"
+                            data-bind="text: lookup.calculatedLocalization()('inku')">
+                        </span>
+                        <span
+                            data-bind="text: lookup.calculatedLocalization()('is a simple drawing app created by Oleksandr Kryvonos, a developer from Odesa, Ukraine.')"
+                        ></span>
                     </div>
                     <div 
                         class="webpad-color-purple" 
                         style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
-                        feel free to e-mail me: <a 
+                        <span
+                            data-bind="text: lookup.calculatedLocalization()('feel free to e-mail me:')"
+                        ></span>
+                        <a 
                             href="mailto:oleksandr.kryvonos.ods.ua@gmail.com" 
                             target="_blank" 
                             rel="noopener noreferrer"
@@ -107,7 +113,8 @@
                             rel="noopener noreferrer"
                             onclick="lookup.patreonLinkOnClick(event)"
                             >
-                            Support on Patreon
+                            <span data-bind="text: lookup.calculatedLocalization()('Support on Patreon')"></span>
+                            
                         </a>
 
                     </div>
@@ -120,42 +127,44 @@
                                 data-bind="attr:
                                 {
                                     href: privacy_policy_link
-                                }">Privacy policy</a>
+                                }"><span data-bind="text: lookup.calculatedLocalization()('Privacy policy')"></span></a>
                         </h2>
                     </div>
 
-                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                    <!-- <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
                             style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
                             onclick="lookup.removeEverything()">
                             Reset
                         </span>
-                    </div>
+                    </div> -->
 
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
                             style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
                             onclick="lookup.toggleFullScreen()">
-                            Full-screen
+                            <span data-bind="text: lookup.calculatedLocalization()('Full-screen')"></span>
                         </span>
                     </div>
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
-                                Source code information:
+                            <span data-bind="text: lookup.calculatedLocalization()('Source code information:')"></span>
+                                
                         </span>
                     </div>
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 1rem; margin-top: 0.5rem;" >
                         <div class="webpad-color-light-pink" style="margin-top: 0.5rem;">
-                            <span class="webpad-color-yellow">
-                                inku
-                            </span> is distributed under MIT license.
+                            <span class="webpad-color-yellow"
+                                data-bind="text: lookup.calculatedLocalization()('inku')">
+                            </span> 
+                            <span data-bind="text: lookup.calculatedLocalization()('is distributed under MIT license.')"></span>
                         </div>
                         <div class="webpad-color-blue">
-                            <span class="webpad-color-yellow">
-                                inku
-                            </span> is an open-source project: <a 
+                            <span class="webpad-color-yellow"
+                                data-bind="text: lookup.calculatedLocalization()('inku')">
+                            </span> <span data-bind="text: lookup.calculatedLocalization()('is an open-source project:')"></span> <a 
                                 href="https://github.com/uprun/inku" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
@@ -166,7 +175,8 @@
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
-                            Development is supported by:
+                            <span data-bind="text: lookup.calculatedLocalization()('Development is supported by:')"></span>
+                            
                         </span>
                     </div>
 
