@@ -139,6 +139,46 @@
                         </span>
                     </div> -->
 
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                            <span data-bind="text: lookup.calculatedLocalization()('Controls:')"></span>
+                        </span>
+                    </div>
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <!-- ko if: currentPage() < 1.1 -->
+                        <span class="webpad-color-blue webpad-sky-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.previousPage()" 
+                            disabled="true">
+                            <span data-bind="text: lookup.calculatedLocalization()('Previous')"></span>
+                        </span>
+                        <!-- /ko -->
+                        <!-- ko ifnot: currentPage() < 1.1 -->
+                        <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.previousPage()">
+                            <span data-bind="text: lookup.calculatedLocalization()('Previous')"></span>
+                        </span>
+                        <!-- /ko -->
+                        <span data-bind="text: lookup.calculatedLocalization()('page:')"></span>
+                        <span data-bind="text: currentPage"></span>
+                        
+                        <!-- ko ifnot: currentPage() < maxPage() -->
+                            <span class="webpad-color-blue webpad-green-frame webpad-button-no-border" 
+                                style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                                onclick="lookup.nextPage()">
+                                <span data-bind="text: lookup.calculatedLocalization()('New')"></span>
+                            </span>
+                        <!-- /ko -->
+                        <!-- ko if: currentPage() < maxPage() -->
+                            <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                                style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                                onclick="lookup.nextPage()">
+                                <span data-bind="text: lookup.calculatedLocalization()('Next')"></span>
+                            </span>
+                        <!-- /ko -->
+                    </div>
+
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
