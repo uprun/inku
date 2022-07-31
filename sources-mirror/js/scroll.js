@@ -5,16 +5,16 @@ if(typeof(lookup) === 'undefined')
 
 lookup.mouseIsDown = false;
 
-window.addEventListener("pointerdown", function(e) {
-    lookup.createPoint({x: e.pageX, y: e.pageY, start: true, finish: false});
+lookup.bodyOnPointerDown = function() {
+    lookup.createPoint({x: event.pageX, y: event.pageY, start: true, finish: false});
     lookup.mouseIsDown = true;
-  });
-window.addEventListener("pointerup", function(e) {
+  };
+lookup.bodyOnPointerUp = function() {
     lookup.mouseIsDown = false;
-    lookup.createPoint({x: e.pageX, y: e.pageY, start: false, finish: true});
-  });
+    lookup.createPoint({x: event.pageX, y: event.pageY, start: false, finish: true});
+  };
 
-  window.addEventListener("pointermove", function(event) 
+lookup.bodyOnPointerMove = function() 
 {
    if(lookup.mouseIsDown) {
     let events = typeof(event.getCoalescedEvents) === "function"? event.getCoalescedEvents() : [event];
@@ -23,7 +23,7 @@ window.addEventListener("pointerup", function(e) {
         lookup.createPoint({x: e.pageX, y: e.pageY, start: false, finish: false});
     }
    }
-});
+};
 
 lookup.previosTouch = undefined;
 

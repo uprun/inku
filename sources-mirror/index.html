@@ -12,6 +12,9 @@
 <body 
     class="lisperanto-main-body" 
     style="background-color: #0c4bac; "
+    onpointermove="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerMove()"
+    onpointerdown="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerDown()"
+    onpointerup="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerUp()"
     onresize="typeof(lookup) !== 'undefined' && lookup.onresize()"
     ontouchmove="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchMove()"
     ontouchend="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
@@ -30,7 +33,11 @@
 
     <div 
         class="webpad-menu-absolute-position webpad-menu-animate-left" 
-        style="display: none;" 
+        style="display: none;"
+        onpointermove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+        onpointerdown="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+        onpointerup="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+        ontouchmove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
         data-bind="
             visible:  $root.menuWasAlreadyOpen(),
             css: { 
@@ -118,17 +125,17 @@
                             <span class="webpad-color-yellow">
                                 inku
                             </span> is an open-source project: <a 
-                                href="https://github.com/uprun/yellow" 
+                                href="https://github.com/uprun/inku" 
                                 target="_blank" 
                                 rel="noopener noreferrer"
                                 onclick="lookup.githubLinkOnClick(event)"
-                                >https://github.com/uprun/yellow</a>
+                                >https://github.com/uprun/inku</a>
                         </div>
                     </div>
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
-                                development is supported by:
+                            Development is supported by:
                         </span>
                     </div>
 
@@ -145,8 +152,13 @@
     </div>
 
     <canvas id="myCanvas" class="yellow-canvas-full-screen" ></canvas>
-    <div class="text-center lisperanto-tool-bar">
-        <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+    <div class="text-center lisperanto-menu-bar">
+        <div style="margin:0.5em; font-size: 1rem;" 
+            class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple"
+            onpointermove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+            onpointerdown="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+            onpointerup="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+            ontouchmove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
             data-bind="click: $root.toggleMenu">
             <span style="font-size: 1rem; vertical-align: middle;">
                 <img src="svg/bars.svg" class="webpad-edit-pencil" alt="toggle menu"/> 
@@ -156,7 +168,7 @@
     </div>
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/knockoutjs/3.5.1/Content/Scripts/knockout-3.5.1.js" asp-append-version="true"></script>
-    <script src="js/yellow.js" asp-append-version="true"></script>
+    <script src="js/inku.js" asp-append-version="true"></script>
     <script src="js/removeEverything.js" asp-append-version="true"></script>
     <script src="js/toggleFullScreen.js" asp-append-version="true"></script>
     <script src="js/toggleMenu.js" asp-append-version="true"></script>
