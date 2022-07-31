@@ -139,6 +139,30 @@
                         </span>
                     </div> -->
 
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >
+                            <span data-bind="text: lookup.calculatedLocalization()('Controls:')"></span>
+                        </span>
+                    </div>
+                    <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                        <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.previousPage()">
+                            <span data-bind="text: lookup.calculatedLocalization()('Previous')"></span>
+                        </span>
+                        <span data-bind="text: lookup.calculatedLocalization()('page:')"></span>
+                        <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.nextPage()">
+                            <span data-bind="text: lookup.calculatedLocalization()('New')"></span>
+                        </span>
+                        <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
+                            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                            onclick="lookup.nextPage()">
+                            <span data-bind="text: lookup.calculatedLocalization()('Next')"></span>
+                        </span>
+                    </div>
+
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 

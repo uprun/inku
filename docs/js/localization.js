@@ -41,6 +41,9 @@ lookup.localization =
     'Development is supported by:': {
         "Ukrainian": "Розробка підтримується завдяки меценатам:"
     },
+    'Controls:': {
+        "Ukrainian": "Керування:"
+    },
 };
 
 lookup.language = ko.observable("Ukrainian");

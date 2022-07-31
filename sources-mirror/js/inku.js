@@ -10,24 +10,61 @@ lookup.patreonSupporters = ko.observableArray(
     ]
 );
 
-lookup.operations = [];
-
-lookup.operationsPush = function(some)
+lookup.operationsPush = function()
 {
-    lookup.operations.push(some);
     var data = JSON.stringify(lookup.points);
-    localStorage.setItem('points', data);
+    localStorage.setItem('page-' + lookup.currentPage() + '-points', data);
 };
+lookup.saveCurrentPage = function() 
+{
+    localStorage.setItem('current-page', lookup.currentPage());
+};
+
+lookup.loadCurrentPage = function()
+{
+    lookup.localStorage = localStorage;
+    const storedPage = localStorage.getItem('current-page') || 1;
+    lookup.currentPage = ko.observable(storedPage);
+};
+
 
 lookup.loadFromStorage = function()
 {
     lookup.localStorage = localStorage;
-    var stored = localStorage.getItem('points');
+
+    var stored = localStorage.getItem('page-' + lookup.currentPage() + '-points');
     if(typeof(stored) !== 'undefined' && stored != null)
     {
         var parsed = JSON.parse(stored);
         lookup.points = parsed;
     }
+    else
+    {
+        lookup.points = [];
+    }
+};
+
+lookup.previousPage = function()
+{
+    var page = lookup.currentPage();
+    if(page > 1)
+    {
+        lookup.currentPage(page - 1);
+        lookup.clearScreen();
+        lookup.saveCurrentPage();
+        lookup.loadFromStorage();
+        lookup.showLoadedObjects();
+    }
+};
+
+lookup.nextPage = function()
+{
+    var page = lookup.currentPage();
+    lookup.currentPage(page + 1);
+    lookup.clearScreen();
+    lookup.saveCurrentPage();
+    lookup.loadFromStorage();
+    lookup.showLoadedObjects();
 };
 
 lookup.showLoadedObjects = function()
@@ -81,7 +118,15 @@ lookup.initCanvas = function()
     }
 };
 
+
+
 lookup.canvas = document.getElementById("myCanvas");
+
+lookup.clearScreen = function()
+{
+    var ctx = lookup.canvas.getContext('2d'); 
+    ctx.clearRect(0, 0, lookup.canvas.width, lookup.canvas.height);
+};
 
 lookup.draw_a_point = function(obj)
 {
@@ -256,6 +301,7 @@ lookup.windowSize.subscribe(function(newValue) {
 $(document).ready(function()
 {
     var viewModel = new Yellow();
+    lookup.loadCurrentPage();
     lookup.loadFromStorage();
     lookup.backgroundApplySaved();
     lookup.loadLanguageFromStorage();
