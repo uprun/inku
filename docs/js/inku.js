@@ -18,13 +18,18 @@ lookup.operationsPush = function()
 lookup.saveCurrentPage = function() 
 {
     localStorage.setItem('current-page', lookup.currentPage());
+    localStorage.setItem('max-page', lookup.maxPage());
+
 };
 
 lookup.loadCurrentPage = function()
 {
     lookup.localStorage = localStorage;
-    const storedPage = localStorage.getItem('current-page') || 1;
+    const storedPage = parseInt(localStorage.getItem('current-page') || "1", 10);
     lookup.currentPage = ko.observable(storedPage);
+
+    const storedMaxPage = parseInt(localStorage.getItem('max-page') || "1", 10);
+    lookup.maxPage = ko.observable(storedMaxPage);
 };
 
 
@@ -46,6 +51,7 @@ lookup.loadFromStorage = function()
 
 lookup.previousPage = function()
 {
+    event.stopPropagation();
     var page = lookup.currentPage();
     if(page > 1)
     {
@@ -59,8 +65,13 @@ lookup.previousPage = function()
 
 lookup.nextPage = function()
 {
+    event.stopPropagation();
     var page = lookup.currentPage();
     lookup.currentPage(page + 1);
+    if(lookup.currentPage() > lookup.maxPage())
+    {
+        lookup.maxPage(lookup.currentPage());
+    }
     lookup.clearScreen();
     lookup.saveCurrentPage();
     lookup.loadFromStorage();

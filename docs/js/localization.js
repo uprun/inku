@@ -44,6 +44,18 @@ lookup.localization =
     'Controls:': {
         "Ukrainian": "Керування:"
     },
+    'Previous': {
+        "Ukrainian": "Попередня"
+    },
+    'Next': {
+        "Ukrainian": "Наступна"
+    },
+    'New': {
+        "Ukrainian": "Нова"
+    },
+    'page:': {
+        "Ukrainian": "сторінка:"
+    },
 };
 
 lookup.language = ko.observable("Ukrainian");
