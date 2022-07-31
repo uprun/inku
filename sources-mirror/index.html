@@ -95,10 +95,13 @@
 
                     <div class="w3-col w3-container s12 m12 l12">
                         <h2>
-                            <a style="color: rgb(242, 155, 103);" data-bind="attr:
-                            {
-                                href: privacy_policy_link
-                            }">Privacy policy</a>
+                            <a style="color: rgb(242, 155, 103);" 
+                                rel="noopener noreferrer"
+                                onclick="lookup.stopPropagation(event)"
+                                data-bind="attr:
+                                {
+                                    href: privacy_policy_link
+                                }">Privacy policy</a>
                         </h2>
                     </div>
 
