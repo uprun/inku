@@ -265,6 +265,14 @@ a
   text-align: center;
 }
 
+.lisperanto-menu-bar
+{
+  position: absolute;
+  top: 0rem;
+  left: 0rem;
+  text-align: center;
+}
+
 .lisperanto-main-body
 {
   margin: 0rem;

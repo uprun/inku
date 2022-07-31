@@ -12,6 +12,9 @@
 <body 
     class="lisperanto-main-body" 
     style="background-color: #0c4bac; "
+    onpointermove="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerMove()"
+    onpointerdown="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerDown()"
+    onpointerup="typeof(lookup) !== 'undefined' && lookup.bodyOnPointerUp()"
     onresize="typeof(lookup) !== 'undefined' && lookup.onresize()"
     ontouchmove="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchMove()"
     ontouchend="typeof(lookup) !== 'undefined' && lookup.bodyOnTouchEnd()"
@@ -30,7 +33,11 @@
 
     <div 
         class="webpad-menu-absolute-position webpad-menu-animate-left" 
-        style="display: none;" 
+        style="display: none;"
+        onpointermove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+        onpointerdown="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+        onpointerup="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+        ontouchmove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
         data-bind="
             visible:  $root.menuWasAlreadyOpen(),
             css: { 
@@ -144,8 +151,13 @@
     </div>
 
     <canvas id="myCanvas" class="yellow-canvas-full-screen" ></canvas>
-    <div class="text-center lisperanto-tool-bar">
-        <div style="margin:0.5em; font-size: 1rem;" class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple" 
+    <div class="text-center lisperanto-menu-bar">
+        <div style="margin:0.5em; font-size: 1rem;" 
+            class="webpad-button-no-border webpad-button-paddings webpad-golden-frame webpad-color-purple"
+            onpointermove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+            onpointerdown="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+            onpointerup="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
+            ontouchmove="typeof(lookup) !== 'undefined' && lookup.stopPropagation()"
             data-bind="click: $root.toggleMenu">
             <span style="font-size: 1rem; vertical-align: middle;">
                 <img src="svg/bars.svg" class="webpad-edit-pencil" alt="toggle menu"/> 
