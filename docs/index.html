@@ -31,11 +31,6 @@
                 background: $root.backgroundColor() 
             }">
 
-    <script>
-        console.log(navigator.language);
-        console.log(navigator.languages);
-    </script>
-
     <div 
         class="webpad-menu-absolute-position webpad-menu-animate-left" 
         style="display: none;"
@@ -56,11 +51,12 @@
                 <span class="webpad-color-yellow" style="font-size: 1.5rem; margin-left: 0.5rem;">
                     inku
                 </span>
-                <span class="webpad-color-blue webpad-hide-on-small-screen" style="font-size: 1.3rem;">
-                    : settings
+                <span class="webpad-color-blue webpad-hide-on-small-screen" style="font-size: 1.3rem;" 
+                    data-bind="text: lookup.calculatedLocalization()(': settings')">
+                    
                 </span>
-                <span class="webpad-color-blue webpad-hide-on-large-screen" style="font-size: 1rem;">
-                    : settings
+                <span class="webpad-color-blue webpad-hide-on-large-screen" style="font-size: 1rem;"
+                    data-bind="text: lookup.calculatedLocalization()(': settings')">
                 </span>
                 <div style="float: right;" class=" webpad-button-no-border webpad-golden-frame" data-bind="click: $root.toggleMenu">
                     <span style="font-size: 2rem;">
@@ -68,6 +64,24 @@
                     </span>
                 </div>
             </div>
+
+            <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+                <span class="webpad-color-blue webpad-button-no-border" 
+                    style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                    data-bind="class: lookup.language() === 'English' ? 'webpad-green-frame': 'webpad-golden-frame' "
+                    onclick="lookup.buttonClickLanguageToEnglish()">
+                    English
+                </span>
+                <span class="webpad-color-blue webpad-button-no-border" 
+                    style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                    data-bind="class: lookup.language() === 'Ukrainian' ? 'webpad-green-frame': 'webpad-golden-frame' "
+                    onclick="lookup.buttonClickLanguageToUkrainian()">
+                    Українська
+                </span>
+            </div>
+
+
+
             <div class="w3-col w3-container s12 m12 l12">
                 <div class="text-left" style="padding-left: 0.5rem;">
                     <div class="webpad-color-blue" style="margin-top: 0.5rem; margin-bottom: 0.5rem; font-size: 1.2rem;">
@@ -195,5 +209,6 @@
     <script src="js/check_platform.js" asp-append-version="true"></script>
     <script src="js/privacy_policy_link.js" asp-append-version="true"></script>
     <script language="JavaScript" type="text/javascript" src="cordova.js"></script>
+    <script src="js/localization.js" asp-append-version="true"></script>
 </body>
 </html>
