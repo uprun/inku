@@ -258,6 +258,7 @@ $(document).ready(function()
     var viewModel = new Yellow();
     lookup.loadFromStorage();
     lookup.backgroundApplySaved();
+    lookup.loadLanguageFromStorage();
     viewModel.ApplyLookupToSelf();
     ko.applyBindings(viewModel);
     lookup.initCanvas();
