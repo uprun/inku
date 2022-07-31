@@ -15,6 +15,16 @@ lookup.privacy_policy_link = ko.computed(function()
     }
     else
     {
-        return "/privacy_policy.html";
+        if( typeof(window.location) !== "undefined" &&
+            typeof(window.location.href) !== "undefined" && 
+            window.location.href.indexOf("https://uprun.github.io/inku") >= 0)
+        {
+            return "https://uprun.github.io/inku/privacy_policy-web.html"
+        }
+        else
+        {
+            return "/privacy_policy.html";
+        }
+
     }
 });
