@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace lisperanto.Controllers
+namespace inku.Controllers
 {
     public class HomeController : Controller
     {
