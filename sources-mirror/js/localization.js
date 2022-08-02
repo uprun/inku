@@ -99,7 +99,10 @@ lookup.loadLanguageFromStorage = function()
         }
 
     }
-    lookup.language(language);
+    else
+    {
+        lookup.language(language);
+    }
 };
 
 lookup.localize_helper = function(text)
