@@ -313,6 +313,7 @@ $(document).ready(function()
     ko.applyBindings(viewModel);
     lookup.initCanvas();
     lookup.loadFromStorage();
+    lookup.check_platform();
 });
 
 
