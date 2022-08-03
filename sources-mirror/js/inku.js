@@ -38,7 +38,7 @@ lookup.loadCurrentPage = function()
 lookup.currentPageLastPointIndex = -1;
 
 
-lookup.loadFromStorage = function(startIndex = 0, maxBatch = 1000, delay = 1)
+lookup.loadFromStorage = function(startIndex = 0, maxBatch = 400, delay = 1)
 {
     lookup.localStorage = localStorage;
 
