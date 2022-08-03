@@ -10,10 +10,13 @@ lookup.patreonSupporters = ko.observableArray(
     ]
 );
 
-lookup.operationsPush = function()
+lookup.operationsPush = function(offset, indexToSave)
 {
-    var data = JSON.stringify(lookup.points);
-    localStorage.setItem('page-' + lookup.currentPage() + '-points', data);
+    var data = JSON.stringify(offset);
+    const pointKey = 'page-' + lookup.currentPage() + '-point-' + indexToSave;
+    const maxPointKey = 'page-' + lookup.currentPage() + '-last-point';
+    localStorage.setItem(pointKey, data);
+    localStorage.setItem(maxPointKey, indexToSave);
 };
 lookup.saveCurrentPage = function() 
 {
@@ -32,20 +35,29 @@ lookup.loadCurrentPage = function()
     lookup.maxPage = ko.observable(storedMaxPage);
 };
 
+lookup.currentPageLastPointIndex = -1;
+
 
 lookup.loadFromStorage = function()
 {
     lookup.localStorage = localStorage;
 
-    var stored = localStorage.getItem('page-' + lookup.currentPage() + '-points');
-    if(typeof(stored) !== 'undefined' && stored != null)
+    const currentPageNumber = lookup.currentPage();
+    const maxPointKey = 'page-' + lookup.currentPage() + '-last-point';
+    lookup.currentPageLastPointIndex = parseInt(localStorage.getItem(maxPointKey) || "-1", 10);
+    if(typeof(lookup.currentPageLastPointIndex) !== "number" ||
+        Number.isNaN(lookup.currentPageLastPointIndex) )
     {
-        var parsed = JSON.parse(stored);
-        lookup.points = parsed;
+        lookup.currentPageLastPointIndex = -1;
     }
-    else
+    lookup.points = [];
+    for (let k = 0; k <= lookup.currentPageLastPointIndex; k++)
     {
-        lookup.points = [];
+        const pointKey = 'page-' + lookup.currentPage() + '-point-' + k;
+        var parsed = JSON.parse(localStorage.getItem(pointKey));
+
+        lookup.draw_a_point(parsed);
+
     }
 };
 
@@ -59,7 +71,6 @@ lookup.previousPage = function()
         lookup.clearScreen();
         lookup.saveCurrentPage();
         lookup.loadFromStorage();
-        lookup.showLoadedObjects();
     }
 };
 
@@ -75,17 +86,6 @@ lookup.nextPage = function()
     lookup.clearScreen();
     lookup.saveCurrentPage();
     lookup.loadFromStorage();
-    lookup.showLoadedObjects();
-};
-
-lookup.showLoadedObjects = function()
-{
-    var k = 0; 
-    for(; k < lookup.points.length; k++ )
-    {
-        lookup.draw_a_point(lookup.points[k]);
-
-    }
 };
 
 lookup.freeIndex = 0;
@@ -125,7 +125,6 @@ lookup.initCanvas = function()
     {
         lookup.canvas.width = document.body.clientWidth;
         lookup.canvas.height = document.body.clientHeight;
-        lookup.showLoadedObjects();
     }
 };
 
@@ -281,14 +280,9 @@ lookup.githubLinkOnClick = function(event)
 
 lookup.createPoint = function(offset) 
 {
-    lookup.points.push(offset);
     lookup.draw_a_point(offset);
-
-    var operation = {
-        operation: "create-point",
-        offset: offset
-    };
-    lookup.operationsPush(operation);
+    lookup.currentPageLastPointIndex += 1;
+    lookup.operationsPush(offset, lookup.currentPageLastPointIndex);
 };
 
 
@@ -303,7 +297,7 @@ lookup.windowSize = ko.observable(
 lookup.windowSize.subscribe(function(newValue) {
     lookup.canvas.width = newValue.width;
     lookup.canvas.height = newValue.height;
-    lookup.showLoadedObjects();
+    lookup.loadFromStorage(0);
     console.log("resize");
 });
 
@@ -313,13 +307,12 @@ $(document).ready(function()
 {
     var viewModel = new Yellow();
     lookup.loadCurrentPage();
-    lookup.loadFromStorage();
     lookup.backgroundApplySaved();
     lookup.loadLanguageFromStorage();
     viewModel.ApplyLookupToSelf();
     ko.applyBindings(viewModel);
     lookup.initCanvas();
-    lookup.showLoadedObjects();
+    lookup.loadFromStorage();
 });
 
 
