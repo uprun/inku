@@ -184,6 +184,7 @@
                     </div>
 
 
+                    <!-- ko ifnot: lookup.platform_is_cordova() -->
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue webpad-golden-frame webpad-button-no-border" 
                             style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
@@ -191,6 +192,7 @@
                             <span data-bind="text: lookup.calculatedLocalization()('Full-screen')"></span>
                         </span>
                     </div>
+                    <!-- /ko -->
 
                     <div class="w3-col w3-container s12 m12 l12" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
                         <span class="webpad-color-blue" tyle="font-size: 1.4rem;" >

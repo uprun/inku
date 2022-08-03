@@ -38,7 +38,7 @@ lookup.loadCurrentPage = function()
 lookup.currentPageLastPointIndex = -1;
 
 
-lookup.loadFromStorage = function()
+lookup.loadFromStorage = function(startIndex)
 {
     lookup.localStorage = localStorage;
 
@@ -50,14 +50,21 @@ lookup.loadFromStorage = function()
     {
         lookup.currentPageLastPointIndex = -1;
     }
-    lookup.points = [];
-    for (let k = 0; k <= lookup.currentPageLastPointIndex; k++)
+
+    var batchMaxIndex = Math.min(startIndex + 1000, lookup.currentPageLastPointIndex);
+
+    for (let k = startIndex; k <= batchMaxIndex; k++)
     {
         const pointKey = 'page-' + lookup.currentPage() + '-point-' + k;
         var parsed = JSON.parse(localStorage.getItem(pointKey));
 
         lookup.draw_a_point(parsed);
 
+    }
+
+    if(batchMaxIndex < lookup.currentPageLastPointIndex)
+    {
+        setTimeout(() => lookup.loadFromStorage(batchMaxIndex+1), 1);
     }
 };
 
@@ -70,7 +77,7 @@ lookup.previousPage = function()
         lookup.currentPage(page - 1);
         lookup.clearScreen();
         lookup.saveCurrentPage();
-        lookup.loadFromStorage();
+        lookup.loadFromStorage(startIndex = 0);
     }
 };
 
@@ -85,7 +92,7 @@ lookup.nextPage = function()
     }
     lookup.clearScreen();
     lookup.saveCurrentPage();
-    lookup.loadFromStorage();
+    lookup.loadFromStorage(startIndex = 0);
 };
 
 lookup.freeIndex = 0;
@@ -109,11 +116,6 @@ lookup.uuidv4 = function() {
     );
   };
 
-lookup.mapOfOpenElements = {};
-lookup.closeElement = function(obj)
-{
-    delete lookup.mapOfOpenElements[obj.id];
-};
 
 
 lookup.initCanvas = function()
@@ -140,7 +142,6 @@ lookup.clearScreen = function()
 
 lookup.draw_a_point = function(obj)
 {
-    lookup.mapOfOpenElements[obj.id] = obj;
     var ctx = lookup.canvas.getContext("2d");
 
     var lineSize = 2;
@@ -214,7 +215,7 @@ lookup.bodyKeyDown = function( data, event)
 
 };
 
-function Yellow()
+function inku()
 {
     var self = this;
 
@@ -297,7 +298,7 @@ lookup.windowSize = ko.observable(
 lookup.windowSize.subscribe(function(newValue) {
     lookup.canvas.width = newValue.width;
     lookup.canvas.height = newValue.height;
-    lookup.loadFromStorage(0);
+    lookup.loadFromStorage(startIndex = 0);
     console.log("resize");
 });
 
@@ -305,14 +306,14 @@ lookup.windowSize.subscribe(function(newValue) {
 
 $(document).ready(function()
 {
-    var viewModel = new Yellow();
+    var viewModel = new inku();
     lookup.loadCurrentPage();
     lookup.backgroundApplySaved();
     lookup.loadLanguageFromStorage();
     viewModel.ApplyLookupToSelf();
     ko.applyBindings(viewModel);
     lookup.initCanvas();
-    lookup.loadFromStorage();
+    lookup.loadFromStorage(startIndex = 0);
     lookup.check_platform();
 });
 
