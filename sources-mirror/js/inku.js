@@ -37,10 +37,20 @@ lookup.loadCurrentPage = function()
 
 lookup.currentPageLastPointIndex = -1;
 
+lookup.loadDrawingTimeOutHandler = undefined;
+
 
 lookup.loadFromStorage = function(startIndex = 0, maxBatch = 400, delay = 1)
 {
     lookup.localStorage = localStorage;
+    if(startIndex === 0)
+    {
+        if (typeof(lookup.loadDrawingTimeOutHandler) !== "undefined")
+        {
+            clearTimeout(lookup.loadDrawingTimeOutHandler);
+            lookup.loadDrawingTimeOutHandler = undefined;
+        }
+    }
 
     const currentPageNumber = lookup.currentPage();
     const maxPointKey = 'page-' + lookup.currentPage() + '-last-point';
@@ -64,7 +74,7 @@ lookup.loadFromStorage = function(startIndex = 0, maxBatch = 400, delay = 1)
 
     if(batchMaxIndex < lookup.currentPageLastPointIndex)
     {
-        setTimeout(() => lookup.loadFromStorage(startIndex=batchMaxIndex+1, maxBatch=maxBatch, delay=delay), delay);
+        lookup.loadDrawingTimeOutHandler = setTimeout(() => lookup.loadFromStorage(startIndex=batchMaxIndex+1, maxBatch=maxBatch, delay=delay), delay);
     }
 };
 
