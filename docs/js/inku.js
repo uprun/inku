@@ -38,7 +38,7 @@ lookup.loadCurrentPage = function()
 lookup.currentPageLastPointIndex = -1;
 
 
-lookup.loadFromStorage = function(startIndex)
+lookup.loadFromStorage = function(startIndex = 0, maxBatch = 1000, delay = 1)
 {
     lookup.localStorage = localStorage;
 
@@ -51,7 +51,7 @@ lookup.loadFromStorage = function(startIndex)
         lookup.currentPageLastPointIndex = -1;
     }
 
-    var batchMaxIndex = Math.min(startIndex + 1000, lookup.currentPageLastPointIndex);
+    var batchMaxIndex = Math.min(startIndex + maxBatch, lookup.currentPageLastPointIndex);
 
     for (let k = startIndex; k <= batchMaxIndex; k++)
     {
@@ -64,7 +64,7 @@ lookup.loadFromStorage = function(startIndex)
 
     if(batchMaxIndex < lookup.currentPageLastPointIndex)
     {
-        setTimeout(() => lookup.loadFromStorage(batchMaxIndex+1), 1);
+        setTimeout(() => lookup.loadFromStorage(startIndex=batchMaxIndex+1, maxBatch=maxBatch, delay=delay), delay);
     }
 };
 
@@ -93,6 +93,13 @@ lookup.nextPage = function()
     lookup.clearScreen();
     lookup.saveCurrentPage();
     lookup.loadFromStorage(startIndex = 0);
+};
+
+lookup.replay = function()
+{
+    event.stopPropagation();
+    lookup.clearScreen();
+    lookup.loadFromStorage(startIndex = 0, maxBatch = 10, delay = 10);
 };
 
 lookup.freeIndex = 0;

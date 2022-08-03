@@ -253,6 +253,49 @@
         </div>
         
     </div>
+
+    <div class="w3-col w3-container s12 m12 l12 inku-navigation-bar" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+        <!-- ko if: currentPage() < 1.1 -->
+        <div class="webpad-color-blue webpad-sky-frame webpad-button-no-border" 
+            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
+            onclick="lookup.previousPage()" 
+            disabled="true">
+            <span>&leftarrow;</span>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: currentPage() < 1.1 -->
+        <div class="webpad-color-yellow webpad-golden-frame webpad-button-no-border" 
+            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
+            onclick="lookup.previousPage()">
+            <span >&leftarrow;</span>
+        </div>
+        <!-- /ko -->
+        <div 
+            style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; padding-top: 2rem; padding-bottom: 2rem;"
+            data-bind="text: currentPage"></div>
+        <!-- ko ifnot: currentPage() < maxPage() -->
+            <div class="webpad-color-green webpad-green-frame webpad-button-no-border" 
+                style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
+                onclick="lookup.nextPage()">
+                <span>&rightarrow;</span>
+            </div>
+        <!-- /ko -->
+        <!-- ko if: currentPage() < maxPage() -->
+            <div class="webpad-color-yellow webpad-golden-frame webpad-button-no-border" 
+                style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
+                onclick="lookup.nextPage()">
+                <span>&rightarrow;</span>
+            </div>
+        <!-- /ko -->
+    </div>
+
+    <div class="w3-col w3-container s12 m12 l12 inku-play-bar" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
+        <div class="webpad-color-coral webpad-golden-frame webpad-button-no-border" 
+                style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
+                onclick="lookup.replay()">
+                <span>&triangleright;</span>
+            </div>
+    </div>
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/knockoutjs/3.5.1/Content/Scripts/knockout-3.5.1.js" asp-append-version="true"></script>
     <script src="js/inku.js" asp-append-version="true"></script>
