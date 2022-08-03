@@ -259,6 +259,13 @@
         <div class="webpad-color-blue webpad-sky-frame webpad-button-no-border" 
             style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
             onclick="lookup.previousPage()" 
+            onpointermove="lookup.stopPropagation()"
+            onpointerdown="lookup.stopPropagation()"
+            onpointerup="lookup.stopPropagation()"
+            ontouchmove="lookup.stopPropagation()"
+            ontouchend="lookup.stopPropagation()"
+            ontouchcancel="lookup.stopPropagation()"
+            ontouchleave="lookup.stopPropagation()"
             disabled="true">
             <span>&leftarrow;</span>
         </div>
@@ -266,7 +273,14 @@
         <!-- ko ifnot: currentPage() < 1.1 -->
         <div class="webpad-color-yellow webpad-golden-frame webpad-button-no-border" 
             style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
-            onclick="lookup.previousPage()">
+            onclick="lookup.previousPage()"
+            onpointermove="lookup.stopPropagation()"
+            onpointerdown="lookup.stopPropagation()"
+            onpointerup="lookup.stopPropagation()"
+            ontouchmove="lookup.stopPropagation()"
+            ontouchend="lookup.stopPropagation()"
+            ontouchcancel="lookup.stopPropagation()"
+            ontouchleave="lookup.stopPropagation()">
             <span >&leftarrow;</span>
         </div>
         <!-- /ko -->
@@ -276,14 +290,28 @@
         <!-- ko ifnot: currentPage() < maxPage() -->
             <div class="webpad-color-green webpad-green-frame webpad-button-no-border" 
                 style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
-                onclick="lookup.nextPage()">
+                onclick="lookup.nextPage()"
+                onpointermove="lookup.stopPropagation()"
+                onpointerdown="lookup.stopPropagation()"
+                onpointerup="lookup.stopPropagation()"
+                ontouchmove="lookup.stopPropagation()"
+                ontouchend="lookup.stopPropagation()"
+                ontouchcancel="lookup.stopPropagation()"
+                ontouchleave="lookup.stopPropagation()">
                 <span>&rightarrow;</span>
             </div>
         <!-- /ko -->
         <!-- ko if: currentPage() < maxPage() -->
             <div class="webpad-color-yellow webpad-golden-frame webpad-button-no-border" 
                 style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem; transform: rotate(90deg);"
-                onclick="lookup.nextPage()">
+                onclick="lookup.nextPage()"
+                onpointermove="lookup.stopPropagation()"
+                onpointerdown="lookup.stopPropagation()"
+                onpointerup="lookup.stopPropagation()"
+                ontouchmove="lookup.stopPropagation()"
+                ontouchend="lookup.stopPropagation()"
+                ontouchcancel="lookup.stopPropagation()"
+                ontouchleave="lookup.stopPropagation()">
                 <span>&rightarrow;</span>
             </div>
         <!-- /ko -->
@@ -292,7 +320,14 @@
     <div class="w3-col w3-container s12 m12 l12 inku-play-bar" style="margin-left: 0.5rem; margin-top: 0.5rem;" >
         <div class="webpad-color-coral webpad-golden-frame webpad-button-no-border" 
                 style="font-size: 1.4rem; padding-left: 1rem; padding-right: 1rem;"
-                onclick="lookup.replay()">
+                onclick="lookup.replay()"
+                onpointermove="lookup.stopPropagation()"
+                onpointerdown="lookup.stopPropagation()"
+                onpointerup="lookup.stopPropagation()"
+                ontouchmove="lookup.stopPropagation()"
+                ontouchend="lookup.stopPropagation()"
+                ontouchcancel="lookup.stopPropagation()"
+                ontouchleave="lookup.stopPropagation()">
                 <span>&triangleright;</span>
             </div>
     </div>
