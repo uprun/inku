@@ -296,8 +296,8 @@ a
 .inku-play-bar
 {
   position: absolute;
-  top: 20rem;
-  left: 0rem;
+  top: 0rem;
+  left: 7rem;
   text-align: center;
 }
 
